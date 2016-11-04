@@ -1,0 +1,19 @@
+
+Progress.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+progressbartexture
+  rotate: false
+  xy: 1, 6
+  size: 329, 31
+  orig: 329, 31
+  offset: 0, 0
+  index: -1
+knob
+  rotate: false
+  xy: 332, 1
+  size: 33, 36
+  orig: 33, 36
+  offset: 0, 0
+  index: -1

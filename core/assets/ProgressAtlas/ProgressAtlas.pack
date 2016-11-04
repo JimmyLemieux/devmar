@@ -1,0 +1,19 @@
+
+ProgressAtlas.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+backgroundbar
+  rotate: false
+  xy: 1, 67
+  size: 436, 140
+  orig: 436, 140
+  offset: 0, 0
+  index: -1
+circle-64
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
