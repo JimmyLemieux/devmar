@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import java.util.ArrayList;
 
 
 public class charPlayer extends Sprite {
@@ -23,6 +25,7 @@ public class charPlayer extends Sprite {
     Texture tex;
     SpriteBatch batch;
     Body body;
+    Array vecList;
     
     GameEngine GE;
     public charPlayer(World world,Vector2 positionVector,Texture tex,SpriteBatch batch,int width,int height){
@@ -36,14 +39,16 @@ public class charPlayer extends Sprite {
         this.setSize(60, 60);
         GE = new GameEngine();
         body = GE.createBody(world, positionVector, 60, 60);
+        //The vector arraylist
+        vecList = new Array();
+        vecList.add(new Vector2(423,378));
+        vecList.add(new Vector2(665,372));
+        vecList.add(new Vector2(809,384));
     }
     
     public void render(){
         this.setX(body.getPosition().x);
         this.setY(body.getPosition().y);
-        
-        body.setLinearVelocity(pathFind(new Vector2(800,300)));
-        
         
         if(Gdx.input.isKeyPressed(Keys.RIGHT)){
             body.setLinearVelocity(new Vector2(1000,0));   
@@ -53,7 +58,7 @@ public class charPlayer extends Sprite {
             body.applyLinearImpulse(new Vector2(1000,0), posVec, true);
         }
         
-        
+        body.setLinearVelocity(new Vector2(50,0));
         batch.draw(this, getX(), getY());
     }
     
@@ -61,8 +66,8 @@ public class charPlayer extends Sprite {
         Vector2 tempPlayerVec = new Vector2(posVec);
         Vector2 tempDestVec = new Vector2(destVec);
         tempDestVec.sub(tempPlayerVec).nor();
-        tempPlayerVec.x -= tempDestVec.x;
-        tempPlayerVec.y -= tempDestVec.y;
+        tempPlayerVec.x += tempDestVec.x;
+        tempPlayerVec.y += tempDestVec.y;
         return tempPlayerVec;
          
     }

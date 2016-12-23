@@ -72,6 +72,8 @@ public class myMap extends ApplicationAdapter {
                 tiledRender.setView(cam);
                 boxRender.render(world, cam.combined);
                 player.render();
+                
+                // System.out.println(Gdx.input.getX() + "," + Gdx.input.getY());
 		batch.end();
 	}
  

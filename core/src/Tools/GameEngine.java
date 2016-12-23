@@ -57,6 +57,7 @@ public class GameEngine {
         BodyDef bodDef = new BodyDef();
         bodDef.position.set(positionVec);
         bodDef.type = BodyType.DynamicBody;
+        bodDef.fixedRotation = true;
         bTemp = world.createBody(bodDef);
         PolygonShape ps = new PolygonShape();
         ps.setAsBox(width/2, height/2);
