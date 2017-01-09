@@ -28,11 +28,10 @@ import com.badlogic.gdx.utils.Array;
 public class GameEngine {
     
     Body bTemp;
-    
     Array bodies;
     Array vectors;
-    
     World world;
+    float ppm = 16;
     public GameEngine(World world){
         this.world = world;
         
@@ -53,10 +52,10 @@ public class GameEngine {
          for(MapObject mapobMain: map.getLayers().get(nLayer).getObjects().getByType(RectangleMapObject.class)) {
              bodDef.type = BodyType.StaticBody;
              Rectangle rectObj = ((RectangleMapObject) mapobMain).getRectangle();
-             bodDef.position.set(rectObj.getX() + rectObj.getWidth()/2, rectObj.getY() + rectObj.getHeight()/2);
+             bodDef.position.set((rectObj.getX() + rectObj.getWidth()/2)/ppm, (rectObj.getY() + rectObj.getHeight()/2)/ppm);
              Body body = world.createBody(bodDef);
              PolygonShape ps = new PolygonShape();
-             ps.setAsBox(rectObj.getWidth()/2, rectObj.getHeight()/2);
+             ps.setAsBox(rectObj.getWidth()/2 / ppm, rectObj.getHeight()/2 / ppm);
              FixtureDef fixDef = new FixtureDef();
              fixDef.shape = ps;
              fixDef.density = 1f;
@@ -76,7 +75,7 @@ public class GameEngine {
         bodDef.fixedRotation = true;
         bTemp = world.createBody(bodDef);
         PolygonShape ps = new PolygonShape();
-        ps.setAsBox(width/2, height/2);
+        ps.setAsBox(width/2 / ppm, height/2 / ppm);
         FixtureDef fixDef = new FixtureDef();
         fixDef.density = 1f;
         fixDef.shape = ps;
@@ -109,8 +108,8 @@ public class GameEngine {
         Vector2[] vecPoints = new Vector2[fCoordinates.length / 2];
         for(int i = 0; i < vecPoints.length; i++) {
             vecPoints[i] = new Vector2();
-            vecPoints[i].x = fCoordinates[i * 2];
-            vecPoints[i].y = fCoordinates[i * 2 + 1];
+            vecPoints[i].x = fCoordinates[i * 2] / ppm;
+            vecPoints[i].y = fCoordinates[i * 2 + 1] / ppm;
         }
         ChainShape csTemp = new ChainShape();
         csTemp.createChain(vecPoints);
@@ -123,7 +122,7 @@ public class GameEngine {
         Rectangle rectTemp = rmObj.getRectangle();
         FixtureDef fdTemp = new FixtureDef();
         PolygonShape psTemp = new PolygonShape();
-        psTemp.setAsBox(rectTemp.width / 2 , rectTemp.height / 2 );
+        psTemp.setAsBox(rectTemp.width / 2 /ppm , rectTemp.height / 2 /ppm );
         fdTemp.shape = psTemp;
         return fdTemp;
      
@@ -134,8 +133,8 @@ public class GameEngine {
         Vector2[] vecPoints = new Vector2[fVerticies.length / 2];
         for(int i = 0; i < fVerticies.length / 2; i++) {
             vecPoints[i] = new Vector2();
-            vecPoints[i].x = fVerticies[i * 2];
-            vecPoints[i].y = fVerticies[i * 2 + 1];
+            vecPoints[i].x = fVerticies[i * 2] / ppm;
+            vecPoints[i].y = fVerticies[i * 2 + 1] / ppm;
         }
         PolygonShape psTemp = new PolygonShape();
         psTemp.set(vecPoints);
@@ -147,7 +146,7 @@ public class GameEngine {
     
      private Vector2 getRectangleCoordinates(RectangleMapObject rmObj) {
         Rectangle rectTemp = rmObj.getRectangle();
-        Vector2 vecLocation = new Vector2((rectTemp.getX() + rectTemp.width / 2), (rectTemp.getY() + rectTemp.height / 2));
+        Vector2 vecLocation = new Vector2((rectTemp.getX() + rectTemp.width / 2) / ppm, (rectTemp.getY() + rectTemp.height / 2) / ppm);
         return vecLocation;
     }
     

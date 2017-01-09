@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -41,9 +42,12 @@ public class myMap extends ApplicationAdapter {
         
         //LoadLayers
         GameEngine GE;
-        
+  
         //Bodies in the world
         Array bodies;
+        float ppm = 16;
+        
+        
 	@Override
 	public void create () {
             //init
@@ -51,15 +55,13 @@ public class myMap extends ApplicationAdapter {
                 world = new World(new Vector2(0,-98f),true);
                 GE = new GameEngine(world);
                 boxRender = new Box2DDebugRenderer();
-                playerVec = new Vector2(100,100);
-                
+                playerVec = new Vector2(100 / ppm,100 / ppm);
                 //Views
                 cam = new OrthographicCamera();
                 tiledmap = new TmxMapLoader().load("Map2/map1.tmx");
-                tiledRender = new OrthogonalTiledMapRenderer(tiledmap);
-                viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),cam);
+                tiledRender = new OrthogonalTiledMapRenderer(tiledmap,1 / ppm);
+                viewport = new FitViewport(Gdx.graphics.getWidth() / ppm,Gdx.graphics.getHeight() / ppm,cam);
                 viewport.apply();
-                cam.position.set(cam.viewportWidth/2, cam.viewportHeight/2, 2);
                 
                 //CALLING
                 GE.loadLayer(4, tiledmap);
@@ -72,10 +74,10 @@ public class myMap extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+                batch.setProjectionMatrix(cam.combined);
 		batch.begin();
                 
                 world.step(Gdx.graphics.getDeltaTime(), 4, 6);
-                
                 
                 cam.update();
                 tiledRender.render();
@@ -95,8 +97,10 @@ public class myMap extends ApplicationAdapter {
  
         @Override
    public void resize(int width, int height){
-      viewport.update(width,height);
-      cam.position.set(cam.viewportWidth/2,cam.viewportHeight/2,0);
+      cam.viewportWidth = width / ppm;
+      cam.viewportHeight = height / ppm;
+      cam.position.set(new Vector3(width / 2 / ppm, height / 2 / ppm, 0));
+      cam.update();
    }
    
 
