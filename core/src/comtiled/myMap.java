@@ -1,12 +1,13 @@
 package comtiled;
 
-import Player.charPlayer;
+import AI.charAI;
 import Tools.GameEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -34,46 +36,60 @@ public class myMap extends ApplicationAdapter {
         World world;
 	
         
-        charPlayer player;
+        charAI player;
         Vector2 playerVec;
-        Texture img;
         
         //LoadLayers
         GameEngine GE;
+        
+        //Bodies in the world
+        Array bodies;
 	@Override
 	public void create () {
+            //init
 		batch = new SpriteBatch();
-                GE = new GameEngine();
                 world = new World(new Vector2(0,-98f),true);
+                GE = new GameEngine(world);
                 boxRender = new Box2DDebugRenderer();
-		img = new Texture("badlogic.jpg");
                 playerVec = new Vector2(100,100);
+                
+                //Views
                 cam = new OrthographicCamera();
                 tiledmap = new TmxMapLoader().load("Map2/map1.tmx");
                 tiledRender = new OrthogonalTiledMapRenderer(tiledmap);
                 viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),cam);
                 viewport.apply();
                 cam.position.set(cam.viewportWidth/2, cam.viewportHeight/2, 2);
-                GE.loadLayer(4, world, tiledmap);
-                GE.loadLayer(5, world, tiledmap);
-                GE.loadLayer(6, world, tiledmap);
-                player = new charPlayer(world,playerVec,img,batch,img.getWidth(),img.getHeight());
                 
-                
+                //CALLING
+                GE.loadLayer(4, tiledmap);
+                GE.loadLayer(5, tiledmap);
+                GE.loadLayer(6, tiledmap);
+                player = new charAI(world,playerVec,batch,50,50);
+
 	}
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+                
                 world.step(Gdx.graphics.getDeltaTime(), 4, 6);
+                
+                
                 cam.update();
                 tiledRender.render();
                 tiledRender.setView(cam);
                 boxRender.render(world, cam.combined);
-                player.render();
                 
-                // System.out.println(Gdx.input.getX() + "," + Gdx.input.getY());
+                
+                if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+                    cam.translate(5, 0);
+                } else if(Gdx.input.isKeyPressed(Keys.LEFT)){
+                    cam.translate(-5, 0);
+                }
+                
+                player.render();
 		batch.end();
 	}
  
@@ -82,4 +98,9 @@ public class myMap extends ApplicationAdapter {
       viewport.update(width,height);
       cam.position.set(cam.viewportWidth/2,cam.viewportHeight/2,0);
    }
+   
+
+   
+   
+   
 }

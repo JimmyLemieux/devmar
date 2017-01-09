@@ -5,7 +5,6 @@
 package Tools;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -20,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
@@ -28,13 +28,26 @@ import com.badlogic.gdx.physics.box2d.World;
 public class GameEngine {
     
     Body bTemp;
-    public GameEngine(){
+    
+    Array bodies;
+    Array vectors;
+    
+    World world;
+    public GameEngine(World world){
+        this.world = world;
         
+        bodies = new Array<Body>();
+        
+        vectors = new Array<Vector2>();
         
         
     }
     
-    public void loadLayer(int nLayer,World world,TiledMap map){
+    
+    //When looping through the bodies append to array list here
+    //Only the static bodies
+    //No need for world.getbodies anymore
+    public void loadLayer(int nLayer,TiledMap map){
         BodyDef bodDef = new BodyDef();
        // MapObjects objs = map.getLayers().get(nLayer).getObjects();
          for(MapObject mapobMain: map.getLayers().get(nLayer).getObjects().getByType(RectangleMapObject.class)) {
@@ -50,7 +63,10 @@ public class GameEngine {
              fixDef.friction = 1f;
              Fixture fix = body.createFixture(fixDef);
              
+             bodies.add(body);
          }
+         
+         
     }
     
     public Body createBody(World world,Vector2 positionVec, int width,int height){
@@ -64,7 +80,7 @@ public class GameEngine {
         FixtureDef fixDef = new FixtureDef();
         fixDef.density = 1f;
         fixDef.shape = ps;
-        fixDef.restitution = 1f;
+        //fixDef.restitution = 1f;
         Fixture fix = bTemp.createFixture(fixDef);
         return bTemp;
     }
@@ -135,4 +151,33 @@ public class GameEngine {
         return vecLocation;
     }
     
+     
+     
+     
+     
+     
+     //Get all body location vectors, populate vector array list
+     
+     
+     public Array worldBodies(){
+         world.getBodies(bodies);
+         for(int i = 0;i<bodies.size;i++){
+           Body tempBod = (Body) bodies.get(i);
+           vectors.add(tempBod.getPosition());
+             if(tempBod.getType() == BodyType.DynamicBody){
+                 bodies.removeIndex(i);
+             }    
+         }
+         return bodies;
+         
+     }
+     
+     
+     public Array worldVectors(){
+         for(Object obj : bodies) {
+             Body bod = (Body)obj;
+             vectors.add(bod.getPosition());
+         }
+         return vectors;
+     }
 }
