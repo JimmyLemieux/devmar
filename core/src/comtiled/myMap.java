@@ -52,7 +52,7 @@ public class myMap extends ApplicationAdapter {
 	public void create () {
             //init
 		batch = new SpriteBatch();
-                world = new World(new Vector2(0,-98f),true);
+                world = new World(new Vector2(0,-9.8f),true);
                 GE = new GameEngine(world);
                 boxRender = new Box2DDebugRenderer();
                 playerVec = new Vector2(100 / ppm,100 / ppm);

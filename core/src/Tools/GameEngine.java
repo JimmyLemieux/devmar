@@ -175,7 +175,8 @@ public class GameEngine {
      public Array worldVectors(){
          for(Object obj : bodies) {
              Body bod = (Body)obj;
-             vectors.add(bod.getPosition());
+             Vector2 bodVec = new Vector2(bod.getPosition().x / ppm,bod.getPosition().y /ppm);
+             vectors.add(bodVec);
          }
          return vectors;
      }
