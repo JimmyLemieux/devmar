@@ -27,6 +27,7 @@ public class charAI extends Sprite {
     Array vectors;
     int index;
     GameEngine GE;
+    float fChangeX = 1, fChangeY = 1;
     
     float ppm = 16;
     public charAI(World world,Vector2 positionVector,SpriteBatch batch,int width,int height){
@@ -46,6 +47,7 @@ public class charAI extends Sprite {
         this.setX(body.getPosition().x / ppm);
         this.setY(body.getPosition().y / ppm);
         wanderFunc(vectors,index);
+        System.out.println("hh");
     }
     //The translation
     public Vector2 moveAi(Vector2 destVec){
@@ -53,30 +55,30 @@ public class charAI extends Sprite {
         Vector2 tempDestVec = new Vector2(destVec);
         tempDestVec.sub(tempPlayerVec).nor();
         tempPlayerVec.x += tempDestVec.x / ppm;
-        tempPlayerVec.y += tempDestVec.y / ppm;
+        tempPlayerVec.y += tempDestVec.y / ppm * 4;
         return tempPlayerVec;
     }
 
     public void wanderFunc(Array vecs,int index){
+        
         Vector2 tempDestVec = new Vector2((Vector2) vectors.get(index));
+        
         //Moving the AI
         body.setTransform(moveAi(tempDestVec), 0);
         //TODO: Clean this up and make more efficient
-           
-
-                if(body.getLinearVelocity().y == 0f){
-                    //When the body is above the y stop jumping
-                   if(body.getPosition().y < tempDestVec.y){
-                   body.applyLinearImpulse(new Vector2(0,100), body.getPosition(), true);
-                   }
-                }
-
- 
-            
-       
-        
-        
-    }
+//                if(body.getLinearVelocity().y == 0f){
+//                    //When the body is above the y stop jumping
+//                   if(body.getPosition().y < tempDestVec.y){
+//                   body.applyLinearImpulse(new Vector2(0,100), body.getPosition(), true);
+//                   }
+//               } 
+                
+                
+                
+                
+                
+                
+            }
     
     
     
