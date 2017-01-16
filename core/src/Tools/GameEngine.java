@@ -162,7 +162,7 @@ public class GameEngine {
          world.getBodies(bodies);
          for(int i = 0;i<bodies.size;i++){
            Body tempBod = (Body) bodies.get(i);
-           vectors.add(tempBod.getPosition());
+           vectors.add(new Vector2(tempBod.getPosition().x , tempBod.getPosition().y));
              if(tempBod.getType() == BodyType.DynamicBody){
                  bodies.removeIndex(i);
              }    
@@ -170,12 +170,10 @@ public class GameEngine {
          return bodies;
          
      }
-     
-     
      public Array worldVectors(){
          for(Object obj : bodies) {
              Body bod = (Body)obj;
-             Vector2 bodVec = new Vector2(bod.getPosition().x / ppm,bod.getPosition().y /ppm);
+             Vector2 bodVec = new Vector2(bod.getPosition().x/ppm ,bod.getPosition().y/ppm);
              vectors.add(bodVec);
          }
          return vectors;

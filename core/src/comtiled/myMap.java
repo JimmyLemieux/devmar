@@ -67,9 +67,9 @@ public class myMap extends ApplicationAdapter {
                 GE.loadLayer(5, tiledmap);
                 GE.loadLayer(6, tiledmap);
                 
-                GE.worldVectors();
-                ai = new AIBrain(world,worldVectors);
-                ai.makeAI(2, 60 , 60);
+                worldVectors = GE.worldVectors();
+                ai = new AIBrain(world);
+                ai.makeAI(4,worldVectors, 60 , 60);
                 player = new charAI(world,playerVec,batch,50,50);
 
 	}
@@ -88,13 +88,9 @@ public class myMap extends ApplicationAdapter {
                 boxRender.render(world, cam.combined);
                 
                 
-                if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-                    cam.translate(5, 0);
-                } else if(Gdx.input.isKeyPressed(Keys.LEFT)){
-                    cam.translate(-5, 0);
-                }
+               
                 
-                ai.update();
+                ai.update(player.body.getPosition());
                 player.render();
 		batch.end();
 	}

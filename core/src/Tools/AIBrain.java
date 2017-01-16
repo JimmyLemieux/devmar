@@ -4,6 +4,7 @@
  */
 package Tools;
 
+import AI.charAI;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,12 +18,13 @@ public final class AIBrain {
     World world;
     GameEngine GE;
     Array aiBodies = new Array<Body>();
-    Array worldBodies = new Array<Vector2>();
     Body body;
     Body bTemp;
     
     float ppm = 16;
-    public AIBrain(World world, Array worldVectors){
+    
+    charAI ai;
+    public AIBrain(World world){
         this.world = world;
         GE = new GameEngine(world);
         //null
@@ -33,10 +35,12 @@ public final class AIBrain {
     
     
     
-    public void makeAI(int nNumber,int width, int height){
+    public void makeAI(int nNumber,Array worldVectors,int width, int height){
         for(int i = 0;i<nNumber;i++){
+            int nRandom = (int)(Math.random() * 1000 + 50);
+           
             //Then have these spawn at body vectors 
-           body = GE.createBody(world, new Vector2(200/ppm,200/ppm), width, height);
+           body = GE.createBody(world, new Vector2(nRandom / ppm , nRandom / ppm ), width , height);
             aiBodies.add(body);
         }
        
@@ -49,24 +53,25 @@ public final class AIBrain {
    public void moveAi(Vector2 destVec){
        
        //Instead of looping through all, just have body moving which is closest to player
-   for(Object obj : aiBodies){
-        Body bTemp = (Body)obj;
         Vector2 tempPlayerVec = new Vector2(body.getPosition().x, body.getPosition().y);
         Vector2 tempDestVec = new Vector2(destVec);
         tempDestVec.sub(tempPlayerVec).nor();
         tempPlayerVec.x += tempDestVec.x / ppm;
         tempPlayerVec.y += tempDestVec.y / ppm;
-       bTemp.setTransform(tempPlayerVec, 0);
+        bTemp.setTransform(tempPlayerVec, 0);
         
-         }
+         
          
     }
+   
+   
+   
+  
     
-      public void update() {
+      public void update(Vector2 playerVec) {
         
           //Instead move to player Vec
-       moveAi(new Vector2(500/ppm,500/ppm));
-           
+           System.out.println(playerVec);
         }
         
     }

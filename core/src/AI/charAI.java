@@ -38,34 +38,19 @@ public class charAI extends Sprite {
         setSize(30 / ppm,30 / ppm);
         GE = new GameEngine(world);
         body = GE.createBody(world, positionVector, 60, 60);
-        
-        worldBodies = GE.worldBodies();
-        vectors = GE.worldVectors();
-        index = 2;
+   
     }
     public void render(){
         this.setX(body.getPosition().x / ppm);
         this.setY(body.getPosition().y / ppm);
-        wanderFunc(vectors,index);
-        System.out.println("hh");
+        if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+            body.setLinearVelocity(10, 0);
+        } else if(Gdx.input.isKeyPressed(Keys.LEFT)){
+            body.setLinearVelocity(-10,0);
+        }
+        
     }
     //The translation
     
 
-    public void wanderFunc(Array vecs,int index){
-        
-        Vector2 tempDestVec = new Vector2((Vector2) vectors.get(index));
-        
-              } 
-                
-                
-                
-                
-                
-                
-            }
-    
-    
-    
-    
-
+}
