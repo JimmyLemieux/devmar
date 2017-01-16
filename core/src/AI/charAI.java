@@ -50,28 +50,13 @@ public class charAI extends Sprite {
         System.out.println("hh");
     }
     //The translation
-    public Vector2 moveAi(Vector2 destVec){
-        Vector2 tempPlayerVec = new Vector2(body.getPosition().x, body.getPosition().y);
-        Vector2 tempDestVec = new Vector2(destVec);
-        tempDestVec.sub(tempPlayerVec).nor();
-        tempPlayerVec.x += tempDestVec.x / ppm;
-        tempPlayerVec.y += tempDestVec.y / ppm * 4;
-        return tempPlayerVec;
-    }
+    
 
     public void wanderFunc(Array vecs,int index){
         
         Vector2 tempDestVec = new Vector2((Vector2) vectors.get(index));
         
-        //Moving the AI
-        body.setTransform(moveAi(tempDestVec), 0);
-        //TODO: Clean this up and make more efficient
-//                if(body.getLinearVelocity().y == 0f){
-//                    //When the body is above the y stop jumping
-//                   if(body.getPosition().y < tempDestVec.y){
-//                   body.applyLinearImpulse(new Vector2(0,100), body.getPosition(), true);
-//                   }
-//               } 
+              } 
                 
                 
                 
@@ -83,4 +68,4 @@ public class charAI extends Sprite {
     
     
     
-}
+

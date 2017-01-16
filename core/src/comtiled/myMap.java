@@ -1,6 +1,7 @@
 package comtiled;
 
 import AI.charAI;
+import Tools.AIBrain;
 import Tools.GameEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -23,18 +24,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class myMap extends ApplicationAdapter {
 	SpriteBatch batch;
-	
-        
+	World world;        
         TiledMap tiledmap;
         TiledMapRenderer tiledRender;
         
         Viewport viewport;
         OrthographicCamera cam;
-        
-        
         //Box2d debugRender
         Box2DDebugRenderer boxRender;
-        World world;
+       
 	
         
         charAI player;
@@ -42,9 +40,10 @@ public class myMap extends ApplicationAdapter {
         
         //LoadLayers
         GameEngine GE;
+        Array worldVectors = new Array<Vector2>();
+        
+        AIBrain ai;
   
-        //Bodies in the world
-        Array bodies;
         float ppm = 16;
         
         
@@ -67,6 +66,10 @@ public class myMap extends ApplicationAdapter {
                 GE.loadLayer(4, tiledmap);
                 GE.loadLayer(5, tiledmap);
                 GE.loadLayer(6, tiledmap);
+                
+                GE.worldVectors();
+                ai = new AIBrain(world,worldVectors);
+                ai.makeAI(2, 60 , 60);
                 player = new charAI(world,playerVec,batch,50,50);
 
 	}
@@ -91,6 +94,7 @@ public class myMap extends ApplicationAdapter {
                     cam.translate(-5, 0);
                 }
                 
+                ai.update();
                 player.render();
 		batch.end();
 	}
