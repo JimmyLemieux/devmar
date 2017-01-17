@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -68,8 +69,11 @@ public class myMap extends ApplicationAdapter {
                 GE.loadLayer(6, tiledmap);
                 
                 worldVectors = GE.worldVectors();
-                ai = new AIBrain(world);
-                ai.makeAI(4,worldVectors, 60 , 60);
+                
+                ai = new AIBrain(world,batch);
+                ai.makeAI(10,worldVectors,new Texture(Gdx.files.internal("simple.png")), 60 , 60);
+                
+                
                 player = new charAI(world,playerVec,batch,50,50);
 
 	}
@@ -100,6 +104,8 @@ public class myMap extends ApplicationAdapter {
       cam.viewportWidth = width / ppm;
       cam.viewportHeight = height / ppm;
       cam.position.set(new Vector3(width / 2 / ppm, height / 2 / ppm, 0));
+      
+      batch.getProjectionMatrix().setToOrtho2D(0, 0, width / ppm, height / ppm);
       cam.update();
    }
    

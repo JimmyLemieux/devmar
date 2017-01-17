@@ -5,6 +5,9 @@
 package Tools;
 
 import AI.charAI;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -14,33 +17,48 @@ import com.badlogic.gdx.utils.Array;
  *
  * @author lemij7026
  */
-public final class AIBrain {
+
+//TODO: Add textures to all the bodies as well
+public final class AIBrain extends Sprite {
     World world;
+    SpriteBatch batch;
     GameEngine GE;
     Array aiBodies = new Array<Body>();
     Body body;
-    Body bTemp;
+    Body tempAiBod;
+    Texture tex;
     
     float ppm = 16;
     
     charAI ai;
-    public AIBrain(World world){
+    Vector2 tempAiVec;
+    
+    
+    
+    
+    
+    
+    public AIBrain(World world, SpriteBatch batch){
         this.world = world;
+        this.batch = batch;
         GE = new GameEngine(world);
-        //null
        
-        
         
     }
     
     
     
-    public void makeAI(int nNumber,Array worldVectors,int width, int height){
+    public void makeAI(int nNumber,Array worldVectors,Texture tex,int width, int height){
+        this.tex = tex;
         for(int i = 0;i<nNumber;i++){
             int nRandom = (int)(Math.random() * 1000 + 50);
-           
+            Vector2 bodVec =  new Vector2(nRandom / ppm , nRandom / ppm);
+            this.setPosition(bodVec.x, bodVec.y);
+            this.setRegion(tex);
+            this.setSize(50 / ppm, 50 / ppm);
             //Then have these spawn at body vectors 
-           body = GE.createBody(world, new Vector2(nRandom / ppm , nRandom / ppm ), width , height);
+            body = GE.createBody(world, bodVec, width , height);
+            body.setActive(true);
             aiBodies.add(body);
         }
        
@@ -50,15 +68,15 @@ public final class AIBrain {
     
   
     
-   public void moveAi(Vector2 destVec){
+   public void moveAi(Vector2 destVec,Body tempAiBod, Vector2 aiBodyVec){
        
        //Instead of looping through all, just have body moving which is closest to player
-        Vector2 tempPlayerVec = new Vector2(body.getPosition().x, body.getPosition().y);
+        Vector2 tempAiVec = new Vector2(aiBodyVec);
         Vector2 tempDestVec = new Vector2(destVec);
-        tempDestVec.sub(tempPlayerVec).nor();
-        tempPlayerVec.x += tempDestVec.x / ppm;
-        tempPlayerVec.y += tempDestVec.y / ppm;
-        bTemp.setTransform(tempPlayerVec, 0);
+        tempDestVec.sub(tempAiVec).nor();
+        tempAiVec.x += tempDestVec.x / ppm;
+        tempAiVec.y += tempDestVec.y / ppm;
+        tempAiBod.setTransform(tempAiVec, 0);
         
          
          
@@ -72,8 +90,42 @@ public final class AIBrain {
         
           //Instead move to player Vec
            System.out.println(playerVec);
+           
+           //set the sprite location to the body location
+           
+           for(Object obj : aiBodies){
+               Body bTemp = (Body)obj;
+               this.setPosition(bTemp.getPosition().x, bTemp.getPosition().y);
+               this.setRegion(tex);
+               this.draw(batch);
+               
+           }
+           
+           
+           if(isClose(playerVec)){
+               this.moveAi(playerVec,tempAiBod, tempAiVec);
+           } else {
+               System.out.println("Not close");
+           }
+           
         }
-        
+      
+      
+      
+      //To have more than one Ai moving at the same time, Add the active bodies to array list
+      public boolean isClose(Vector2 playerVec){
+          for(Object obj : aiBodies){
+              Body bTemp = (Body)obj;
+              if(bTemp.getPosition().dst(playerVec) < 10){
+                  tempAiVec = new Vector2(bTemp.getPosition());
+                  tempAiBod = bTemp;
+                  this.setX(tempAiVec.x);
+                  this.setY(tempAiVec.y);
+                  return true;  
+              }   
+          }          
+          return false;
+      }
     }
       
       

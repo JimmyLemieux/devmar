@@ -23,11 +23,7 @@ public class charAI extends Sprite {
     Texture tex;
     SpriteBatch batch;
     public Body body;
-    Array worldBodies;
-    Array vectors;
-    int index;
     GameEngine GE;
-    float fChangeX = 1, fChangeY = 1;
     
     float ppm = 16;
     public charAI(World world,Vector2 positionVector,SpriteBatch batch,int width,int height){
@@ -38,6 +34,7 @@ public class charAI extends Sprite {
         setSize(30 / ppm,30 / ppm);
         GE = new GameEngine(world);
         body = GE.createBody(world, positionVector, 60, 60);
+        
    
     }
     public void render(){
@@ -47,6 +44,8 @@ public class charAI extends Sprite {
             body.setLinearVelocity(10, 0);
         } else if(Gdx.input.isKeyPressed(Keys.LEFT)){
             body.setLinearVelocity(-10,0);
+        } else if(Gdx.input.isKeyPressed(Keys.UP)){
+            body.setLinearVelocity(0,10);
         }
         
     }
