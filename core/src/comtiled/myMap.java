@@ -62,7 +62,6 @@ public class myMap extends ApplicationAdapter {
                 tiledRender = new OrthogonalTiledMapRenderer(tiledmap,1 / ppm);
                 viewport = new FitViewport(Gdx.graphics.getWidth() / ppm,Gdx.graphics.getHeight() / ppm,cam);
                 viewport.apply();
-                
                 //CALLING
                 GE.loadLayer(4, tiledmap);
                 GE.loadLayer(5, tiledmap);
@@ -71,7 +70,7 @@ public class myMap extends ApplicationAdapter {
                 worldVectors = GE.worldVectors();
                 
                 ai = new AIBrain(world,batch);
-                ai.makeAI(10,worldVectors,new Texture(Gdx.files.internal("simple.png")), 60 , 60);
+                ai.makeAI(2,new Texture(Gdx.files.internal("simple.png")), 60 , 60);
                 
                 
                 player = new charAI(world,playerVec,batch,50,50);

@@ -24,6 +24,7 @@ public final class AIBrain extends Sprite {
     SpriteBatch batch;
     GameEngine GE;
     Array aiBodies = new Array<Body>();
+    Array aiVectors = new Array<Vector2>();
     Body body;
     Body tempAiBod;
     Texture tex;
@@ -32,11 +33,6 @@ public final class AIBrain extends Sprite {
     
     charAI ai;
     Vector2 tempAiVec;
-    
-    
-    
-    
-    
     
     public AIBrain(World world, SpriteBatch batch){
         this.world = world;
@@ -48,20 +44,20 @@ public final class AIBrain extends Sprite {
     
     
     
-    public void makeAI(int nNumber,Array worldVectors,Texture tex,int width, int height){
+    public void makeAI(int nNumber,Texture tex,int width, int height){
         this.tex = tex;
         for(int i = 0;i<nNumber;i++){
             int nRandom = (int)(Math.random() * 1000 + 50);
             Vector2 bodVec =  new Vector2(nRandom / ppm , nRandom / ppm);
-            this.setPosition(bodVec.x, bodVec.y);
-            this.setRegion(tex);
-            this.setSize(50 / ppm, 50 / ppm);
             //Then have these spawn at body vectors 
-            body = GE.createBody(world, bodVec, width , height);
-            body.setActive(true);
+            body = GE.createBody(world, bodVec, width , height,"AI");            
             aiBodies.add(body);
         }
        
+        aiVectors = GE.aiVectors;
+        
+        System.out.println();
+        
         
         
     }
@@ -69,17 +65,14 @@ public final class AIBrain extends Sprite {
   
     
    public void moveAi(Vector2 destVec,Body tempAiBod, Vector2 aiBodyVec){
-       
        //Instead of looping through all, just have body moving which is closest to player
         Vector2 tempAiVec = new Vector2(aiBodyVec);
         Vector2 tempDestVec = new Vector2(destVec);
         tempDestVec.sub(tempAiVec).nor();
         tempAiVec.x += tempDestVec.x / ppm;
-        tempAiVec.y += tempDestVec.y / ppm;
-        tempAiBod.setTransform(tempAiVec, 0);
-        
-         
-         
+        tempAiVec.y += tempDestVec.y / ppm * 4;
+        tempAiBod.setTransform(tempAiVec, 0); 
+ 
     }
    
    
@@ -98,9 +91,9 @@ public final class AIBrain extends Sprite {
                this.setPosition(bTemp.getPosition().x, bTemp.getPosition().y);
                this.setRegion(tex);
                this.draw(batch);
+               bTemp.setAwake(true);
                
            }
-           
            
            if(isClose(playerVec)){
                this.moveAi(playerVec,tempAiBod, tempAiVec);
@@ -116,17 +109,18 @@ public final class AIBrain extends Sprite {
       public boolean isClose(Vector2 playerVec){
           for(Object obj : aiBodies){
               Body bTemp = (Body)obj;
-              if(bTemp.getPosition().dst(playerVec) < 10){
-                  tempAiVec = new Vector2(bTemp.getPosition());
+              if(bTemp.getPosition().dst(playerVec) < 20){
+                  System.out.println(obj);
                   tempAiBod = bTemp;
-                  this.setX(tempAiVec.x);
-                  this.setY(tempAiVec.y);
+                  tempAiVec = new Vector2(bTemp.getPosition());
                   return true;  
               }   
           }          
           return false;
       }
     }
+
+
       
       
      

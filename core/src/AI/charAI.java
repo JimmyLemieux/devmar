@@ -33,7 +33,7 @@ public class charAI extends Sprite {
         setPosition(positionVector.x / ppm,positionVector.y / ppm);
         setSize(30 / ppm,30 / ppm);
         GE = new GameEngine(world);
-        body = GE.createBody(world, positionVector, 60, 60);
+        body = GE.createBody(world, positionVector, 60, 60,"player");
         
    
     }

@@ -29,16 +29,19 @@ public class GameEngine {
     
     Body bTemp;
     Array bodies;
-    Array vectors;
+    Array staticVectors;
+    Array aiVectors;
     World world;
     float ppm = 16;
+    private short CATEGORY_AI = 8;
     public GameEngine(World world){
         this.world = world;
         
         bodies = new Array<Body>();
         
-        vectors = new Array<Vector2>();
+        staticVectors = new Array<Vector2>();
         
+        aiVectors = new Array<Vector2>();
         
     }
     
@@ -68,7 +71,7 @@ public class GameEngine {
          
     }
     
-    public Body createBody(World world,Vector2 positionVec, int width,int height){
+    public Body createBody(World world,Vector2 positionVec, int width,int height,String sUserType){
         BodyDef bodDef = new BodyDef();
         bodDef.position.set(positionVec);
         bodDef.type = BodyType.DynamicBody;
@@ -79,10 +82,13 @@ public class GameEngine {
         FixtureDef fixDef = new FixtureDef();
         fixDef.density = 1f;
         fixDef.shape = ps;
-        //fixDef.restitution = 1f;
         Fixture fix = bTemp.createFixture(fixDef);
+        bTemp.setUserData(sUserType);
         return bTemp;
     }
+    
+    
+   
             
      public void loadMapLayer(int nLayer, World wTemp, TiledMap tmTemp) {
         for(MapObject mObj: tmTemp.getLayers().get(nLayer).getObjects()) {
@@ -149,33 +155,25 @@ public class GameEngine {
         Vector2 vecLocation = new Vector2((rectTemp.getX() + rectTemp.width / 2) / ppm, (rectTemp.getY() + rectTemp.height / 2) / ppm);
         return vecLocation;
     }
-    
-     
-     
-     
-     
+
      
      //Get all body location vectors, populate vector array list
      
      
-     public Array worldBodies(){
-         world.getBodies(bodies);
-         for(int i = 0;i<bodies.size;i++){
-           Body tempBod = (Body) bodies.get(i);
-           vectors.add(new Vector2(tempBod.getPosition().x , tempBod.getPosition().y));
-             if(tempBod.getType() == BodyType.DynamicBody){
-                 bodies.removeIndex(i);
-             }    
-         }
-         return bodies;
-         
-     }
+
      public Array worldVectors(){
-         for(Object obj : bodies) {
-             Body bod = (Body)obj;
-             Vector2 bodVec = new Vector2(bod.getPosition().x/ppm ,bod.getPosition().y/ppm);
-             vectors.add(bodVec);
+         world.getBodies(bodies);
+         
+         for(Object obj : bodies){
+             Body bTemp = (Body)obj;
+             if(bTemp.getUserData() == "AI"){
+                 aiVectors.add(bTemp.getPosition());
+             }
+             
          }
-         return vectors;
+         
+         
+         
+         return aiVectors;
      }
 }
