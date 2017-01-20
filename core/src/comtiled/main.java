@@ -58,7 +58,7 @@ public class main extends ApplicationAdapter {
 
         //Config AI
         ai = new AiConfig(world, batch);
-        ai.makeAI(2, new Texture(Gdx.files.internal("simple.png")), 60, 60);
+        ai.makeAI(5, new Texture(Gdx.files.internal("simple.png")), 60, 60);
 
         player = new playerClass(world, playerVec, batch, 50, 50);
     }

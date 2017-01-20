@@ -19,17 +19,16 @@ import comtiled.main;
  * @author lemij7026
  */
 //TODO: Add textures to all the bodies as well
-public final class AiConfig extends Sprite {
+public final class AiConfig  {
 
     World world;
     SpriteBatch batch;
     GameEngine GE;
     Array aiBodies = new Array<Object>();
-    Array aiVectors = new Array<Object>();
+    Array spawnLocation = new Array<Object>();
     Body body;
     Body tempAiBod;
     Texture tex;
-
     playerClass ai;
     main main;
     Vector2 tempAiVec;
@@ -48,10 +47,10 @@ public final class AiConfig extends Sprite {
         for (int i = 0; i < nNumber; i++) {
             int nRandom = (int) (Math.random() * 1000 + 50);
             Vector2 bodVec = new Vector2(nRandom / main.PIXELS_TO_METERS, nRandom / main.PIXELS_TO_METERS / 1.5f);
+            spawnLocation.add(bodVec);
             //Then have these spawn at body vectors 
             body = GE.createBody(world, bodVec, width, height, "AI");
             aiBodies.add(body);
-            aiVectors.add(body.getPosition());
 
         }
 
@@ -77,7 +76,10 @@ public final class AiConfig extends Sprite {
         if (isClose(playerVec)) {
             this.moveAi(playerVec, tempAiBod, tempAiVec);
         } else {
-            System.out.println("Out of range");
+            //Send in ai body and its position
+            //Have them teleport back instead
+            //I have to find efficeient way
+            System.out.println("Far away");
         }
 
     }
@@ -91,8 +93,9 @@ public final class AiConfig extends Sprite {
                 tempAiBod = bTemp;
                 tempAiVec = new Vector2(bTemp.getPosition());
                 return true;
-            }
+            } 
         }
+
         return false;
     }
 
