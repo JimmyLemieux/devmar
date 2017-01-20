@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -37,6 +38,11 @@ public class main extends ApplicationAdapter {
     AiConfig ai;
     public float PIXELS_TO_METERS = 16;
 
+    
+    //Test Sprite
+    Sprite spr;
+    Texture tex;
+    
     @Override
     public void create() {
         //init
@@ -59,8 +65,14 @@ public class main extends ApplicationAdapter {
         //Config AI
         ai = new AiConfig(world, batch);
         ai.makeAI(5, new Texture(Gdx.files.internal("simple.png")), 60, 60);
+        
 
         player = new playerClass(world, playerVec, batch, 50, 50);
+        
+        
+        spr = new Sprite(new Texture("simple.png"));
+        spr.setSize(16, 16);
+        
     }
 
     @Override

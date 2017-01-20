@@ -19,7 +19,7 @@ import comtiled.main;
  * @author lemij7026
  */
 //TODO: Add textures to all the bodies as well
-public final class AiConfig  {
+public final class AiConfig extends Sprite  {
 
     World world;
     SpriteBatch batch;
@@ -43,6 +43,8 @@ public final class AiConfig  {
     }
 
     public void makeAI(int nNumber, Texture tex, int width, int height) {
+        this.tex = tex;
+        this.setRegion(tex);
         //Instead set spawn locations
         for (int i = 0; i < nNumber; i++) {
             int nRandom = (int) (Math.random() * 1000 + 50);
@@ -50,6 +52,7 @@ public final class AiConfig  {
             spawnLocation.add(bodVec);
             //Then have these spawn at body vectors 
             body = GE.createBody(world, bodVec, width, height, "AI");
+            this.setPosition(body.getPosition().x, body.getPosition().y);
             aiBodies.add(body);
 
         }
