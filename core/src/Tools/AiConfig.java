@@ -66,7 +66,7 @@ public final class AiConfig extends Sprite  {
         Vector2 tempAiVec = new Vector2(aiBodyVec);
         Vector2 tempDestVec = new Vector2(destVec);
         tempDestVec.sub(tempAiVec).nor();
-        tempAiVec.x += tempDestVec.x / main.PIXELS_TO_METERS;
+        tempAiVec.x += tempDestVec.x / main.PIXELS_TO_METERS * 2;
         tempAiVec.y += tempDestVec.y / main.PIXELS_TO_METERS * 5;
         tempAiBod.setTransform(tempAiVec, 0);
     }

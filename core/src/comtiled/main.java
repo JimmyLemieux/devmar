@@ -75,11 +75,12 @@ public class main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 206, 209, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         world.step(Gdx.graphics.getDeltaTime(), 4, 6);
+        cam.position.set(new Vector3(player.body.getPosition().x,player.body.getPosition().y,4));
         cam.update();
         tiledRender.render();
         tiledRender.setView(cam);
