@@ -5,6 +5,8 @@ import Tools.AiConfig;
 import Tools.GameEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -64,11 +66,7 @@ public class main extends ApplicationAdapter {
 
         //Config AI
         ai = new AiConfig(world, batch);
-        ai.makeAI(5, new Texture(Gdx.files.internal("simple.png")), 60, 60);
-        
-
         player = new playerClass(world, playerVec, batch, 50, 50);
-        
         
         spr = new Sprite(new Texture("simple.png"));
         spr.setSize(16, 16);
@@ -88,6 +86,10 @@ public class main extends ApplicationAdapter {
         boxRender.render(world, cam.combined);
         ai.update(player.body.getPosition());
         player.render();
+        
+        if(Gdx.input.isKeyJustPressed(Keys.N)){
+            ai.makeAI(1, new Texture(Gdx.files.internal("simple.png")), 25, 25);
+        }
         batch.end();
     }
 
