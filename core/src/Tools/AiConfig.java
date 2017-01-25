@@ -60,6 +60,8 @@ public final class AiConfig extends Sprite  {
 
     //I send the individual body along with vector position. To avoid lag
     //We need to make new instances of each vector since they are constantly being manipulated
+    
+    //This is from  your code grondin
     public void moveAi(Vector2 destVec, Body tempAiBod, Vector2 aiBodyVec) {
         //Instead of looping through all, just have body moving which is closest to player
         Vector2 tempAiVec = new Vector2(aiBodyVec);
@@ -69,7 +71,7 @@ public final class AiConfig extends Sprite  {
         tempAiVec.y += tempDestVec.y / main.PIXELS_TO_METERS * 5;
         tempAiBod.setTransform(tempAiVec, 0);
     }
-
+//This here I thought of myself
     public void update(Vector2 playerVec) {
         for (Object obj : aiBodies) {
             Body bTemp = (Body) obj;

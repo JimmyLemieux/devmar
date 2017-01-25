@@ -38,13 +38,10 @@ public class main extends ApplicationAdapter {
     //LoadLayers
     GameEngine GE;
     AiConfig ai;
+    //This is the scaling constant, the tiled map ratio
+    //Convert the pixels to meters 
+    //http://gamedev.stackexchange.com/questions/87917/box2d-meters-and-pixels
     public float PIXELS_TO_METERS = 16;
-
-    
-    //Test Sprite
-    Sprite spr;
-    Texture tex;
-    
     @Override
     public void create() {
         //init
@@ -63,16 +60,10 @@ public class main extends ApplicationAdapter {
         GE.loadLayer(4, tiledmap);
         GE.loadLayer(5, tiledmap);
         GE.loadLayer(6, tiledmap);
-
         //Config AI
         ai = new AiConfig(world, batch);
-        player = new playerClass(world, playerVec, batch, 50, 50);
-        
-        spr = new Sprite(new Texture("simple.png"));
-        spr.setSize(16, 16);
-        
+        player = new playerClass(world, playerVec, batch, 50, 50);   
     }
-
     @Override
     public void render() {
         Gdx.gl.glClearColor(0, 206, 209, 0);
@@ -87,13 +78,12 @@ public class main extends ApplicationAdapter {
         boxRender.render(world, cam.combined);
         ai.update(player.body.getPosition());
         player.render();
-        
         if(Gdx.input.isKeyJustPressed(Keys.N)){
             ai.makeAI(1, new Texture(Gdx.files.internal("simple.png")), 25, 25);
         }
         batch.end();
     }
-
+    //
     @Override
     public void resize(int width, int height) {
         cam.viewportWidth = width / PIXELS_TO_METERS;
