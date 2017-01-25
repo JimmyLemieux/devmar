@@ -52,7 +52,6 @@ public final class AiConfig extends Sprite  {
             spawnLocation.add(bodVec);
             //Then have these spawn at body vectors 
             body = GE.createBody(world, bodVec, width, height, "AI");
-            this.setPosition(body.getPosition().x, body.getPosition().y);
             aiBodies.add(body);
 
         }
@@ -79,9 +78,6 @@ public final class AiConfig extends Sprite  {
         if (isClose(playerVec)) {
             this.moveAi(playerVec, tempAiBod, tempAiVec);
         } else {
-            //Send in ai body and its position
-            //Have them teleport back instead
-            //I have to find efficeient way
             System.out.println("Far away");
         }
 
